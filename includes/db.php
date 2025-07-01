@@ -1,9 +1,13 @@
 <?php
-// db.php - Database Connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$database = "hotel booking";
+// db.php - Secure Database Connection using .env
+
+// Load .env vars
+$dotenv = parse_ini_file(__DIR__ . '/../.env');
+
+$servername = $dotenv['DB_HOST'];
+$username   = $dotenv['DB_USER'];
+$password   = $dotenv['DB_PASS'];
+$database   = $dotenv['DB_NAME'];
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $database);

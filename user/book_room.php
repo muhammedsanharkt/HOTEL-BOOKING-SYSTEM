@@ -20,29 +20,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $checkout_date = $_POST["check_out"];
     $user_id = $_SESSION["user_id"];
 
-    // File upload
-    $fileName = $_FILES["id_proof"]["name"];
-    $tmpName = $_FILES["id_proof"]["tmp_name"];
-    $fileType = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-    $allowed = ['jpg', 'jpeg', 'png', 'pdf'];
+    // Validate dates
+    $today = date("Y-m-d");
 
-    if (!in_array($fileType, $allowed)) {
-        $error = "Only JPG, JPEG, PNG, or PDF files are allowed.";
+    if ($check_in < $today) {
+        $error = "❌ Check-in date cannot be in the past.";
+    } elseif ($checkout_date <= $check_in) {
+        $error = "❌ Check-out date must be after check-in date.";
     } else {
-        $newName = uniqid() . "." . $fileType;
-        $targetPath = "../uploads/" . $newName;
+        // File upload
+        $fileName = $_FILES["id_proof"]["name"];
+        $tmpName = $_FILES["id_proof"]["tmp_name"];
+        $fileType = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+        $allowed = ['jpg', 'jpeg', 'png', 'pdf'];
 
-        if (move_uploaded_file($tmpName, $targetPath)) {
-            $stmt = $conn->prepare("INSERT INTO bookings (user_id, room_id, check_in, checkout_date, id_proof) VALUES (?, ?, ?, ?, ?)");
-            $stmt->bind_param("iisss", $user_id, $room_id, $check_in, $checkout_date, $newName);
-
-            if ($stmt->execute()) {
-                $success = "✅ Room booked successfully!";
-            } else {
-                $error = "❌ Failed to save booking. Please try again.";
-            }
+        if (!in_array($fileType, $allowed)) {
+            $error = "❌ Only JPG, JPEG, PNG, or PDF files are allowed.";
         } else {
-            $error = "❌ Failed to upload ID proof.";
+            $newName = uniqid() . "." . $fileType;
+            $targetPath = "../uploads/" . $newName;
+
+            if (move_uploaded_file($tmpName, $targetPath)) {
+                $stmt = $conn->prepare("INSERT INTO bookings (user_id, room_id, check_in, checkout_date, id_proof) VALUES (?, ?, ?, ?, ?)");
+                $stmt->bind_param("iisss", $user_id, $room_id, $check_in, $checkout_date, $newName);
+
+                if ($stmt->execute()) {
+                    $success = "✅ Room booked successfully!";
+                } else {
+                    $error = "❌ Failed to save booking. Please try again.";
+                }
+            } else {
+                $error = "❌ Failed to upload ID proof.";
+            }
         }
     }
 }
@@ -84,12 +93,12 @@ $rooms = $conn->query("SELECT * FROM rooms");
 
     <div class="mb-3">
       <label for="check_in" class="form-label">Check-In Date</label>
-      <input type="date" name="check_in" id="check_in" class="form-control" required>
+      <input type="date" name="check_in" id="check_in" class="form-control" required min="<?= date('Y-m-d') ?>">
     </div>
 
     <div class="mb-3">
       <label for="check_out" class="form-label">Check-Out Date</label>
-      <input type="date" name="check_out" id="check_out" class="form-control" required>
+      <input type="date" name="check_out" id="check_out" class="form-control" required min="<?= date('Y-m-d', strtotime('+1 day')) ?>">
     </div>
 
     <div class="mb-3">

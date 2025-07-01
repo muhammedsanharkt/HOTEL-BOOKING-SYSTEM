@@ -1,0 +1,89 @@
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f6f9;
+      color: #333;
+    }
+
+    .navbar {
+      background-color: #0d1b2a;
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+
+    .hero-section {
+      padding: 100px 0;
+      background: linear-gradient(135deg, #ffffff, #e0e7ff);
+      text-align: center;
+    }
+
+    .hero-section h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .hero-section p {
+      font-size: 1.2rem;
+      color: #475569;
+    }
+
+    .btn-primary-custom {
+      background-color: #1e40af;
+      color: #fff;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 6px;
+      transition: 0.3s;
+    }
+
+    .btn-primary-custom:hover {
+      background-color: #1d4ed8;
+      transform: translateY(-2px);
+    }
+
+    .btn-outline-custom {
+      border: 2px solid #1e40af;
+      color: #1e40af;
+      padding: 12px 25px;
+      border-radius: 6px;
+      transition: 0.3s;
+    }
+
+    .btn-outline-custom:hover {
+      background-color: #1e40af;
+      color: #fff;
+    }
+
+    .info-section {
+      padding: 60px 0;
+      background-color: #fff;
+    }
+
+    .info-box {
+      background: #f1f5f9;
+      border-radius: 8px;
+      padding: 30px;
+      transition: 0.3s ease-in-out;
+    }
+
+    .info-box:hover {
+      background: #e2e8f0;
+      transform: translateY(-5px);
+    }
+
+    .rooms-section {
+      padding: 60px 0;
+      background-color: #f9fafb;
+    }
+
+    .footer {
+      background-color: #0f172a;
+      color: #cbd5e1;
+      text-align: center;
+      padding: 20px 0;
+      font-size: 0.95rem;
+    }
